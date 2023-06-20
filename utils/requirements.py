@@ -20,4 +20,6 @@ class RequirementsManager:
             f'Библиотеки, которые будут устанавливаться: {self.libs}')
         command = ['venv/bin/pip', 'install'] + self.libs
         subprocess.run(command)
-        subprocess.run(['venv/bin/pip', 'freeze', '>', 'requirements.txt'])
+        output = subprocess.check_output(['venv/bin/pip', 'freeze'])
+        with open('requirements.txt', 'w') as file:
+            file.write(output.decode('utf-8'))
