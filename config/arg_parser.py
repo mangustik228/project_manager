@@ -30,10 +30,10 @@ def get_namespace(config_path: str):
                         help='Название нового проекта')
 
     parser.add_argument('-g', '--git', action="store_true",
-                        help='Инициализировать репозиторий и создать .gitignore')
+                        help='Инициализировать репозиторий и создать .gitignore и первый коммит')
 
     parser.add_argument('-c', '--config', action="store_true",
-                        help='Добавить файл config.ini')
+                        help='Добавить config/config.py, а также config.ini')
 
     parser.add_argument('-v', '--venv', action="store_true",
                         help='Добавить виртуальное окружение в проекте')
@@ -42,7 +42,7 @@ def get_namespace(config_path: str):
                         help='Добавить парсер аргументов при запуске')
 
     parser.add_argument('-e', '--env', action="store_true",
-                        help='Добавить файл с стандартными ключами')
+                        help='Добавить файл .env с стандартными секретами')
 
     parser.add_argument('-t', '--test', action="store_true",
                         help='Добавить файл pytest.ini')
