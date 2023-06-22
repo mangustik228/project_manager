@@ -28,7 +28,8 @@ class BaseManager:
         if input_path is None:
             input_path = output_path
         if os.path.exists(input_path):
-            logger.warning('Такой фаил уже существует, он не был перезаписан')
+            logger.warning(
+                f'"{input_path}" фаил уже существует, он не был перезаписан')
             return
         shutil.copy(f'{self.settings.base_path}/{output_path}', input_path)
 
@@ -36,7 +37,8 @@ class BaseManager:
         if input_path is None:
             input_path = output_path
         if os.path.exists(input_path):
-            logger.warning('Такая папка уже существует, он не был перезаписан')
+            logger.warning(
+                f'"{input_path}" папка уже существует, она не был перезаписан')
             return
         shutil.copytree(
             f'{self.settings.base_path}/{output_path}', input_path)
