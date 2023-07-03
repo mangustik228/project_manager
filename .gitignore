@@ -1,6 +1,7 @@
 # main files
 .env
 .venv
+test.py
 
 # folders 
 .vscode/

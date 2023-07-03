@@ -56,6 +56,7 @@ class Manager(BaseManager):
         self.copy_file('pytest.ini')
         self.copy_folder('tests')
         self.requirements.add('pytest')
+        self.requirements.add('pytest-mock')
         logger.info(f'Созданы заготовки под тесты')
 
     @check_atribute('name')

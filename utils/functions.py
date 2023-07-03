@@ -1,9 +1,11 @@
 from loguru import logger
 from utils.base_manager import BaseManager
+from functools import wraps
 
 
 def check_atribute(name: str):
     def inner_function(func: callable):
+        @wraps
         def inner_function_2(*args, **kwargs):
             manager: BaseManager = args[0]
             if manager.namespace.get(name) or \
