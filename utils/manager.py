@@ -59,6 +59,12 @@ class Manager(BaseManager):
         self.requirements.add('pytest-mock')
         logger.info(f'Созданы заготовки под тесты')
 
+    @check_atribute('logs')
+    def create_logs(self):
+        os.mkdir('logs')
+        self.requirements.add("telebot")
+        self.copy_file('app/logs.py', 'app/config/logs.py')
+
     @check_atribute('name')
     def finish(self):
         subprocess.run(['git', 'add', '.'])

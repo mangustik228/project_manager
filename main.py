@@ -15,6 +15,7 @@ def main():
     manager.create_config_template()
     manager.create_test_folder()
     manager.create_args_parser()
+    manager.create_logs()
     manager.create_venv()
     manager.requirements.install()
     manager.finish()

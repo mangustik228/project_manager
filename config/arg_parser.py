@@ -32,6 +32,9 @@ def get_namespace(config_path: str):
     parser.add_argument('-g', '--git', action="store_true",
                         help='Инициализировать репозиторий и создать .gitignore и первый коммит')
 
+    parser.add_argument('-l', '--logs', action="store_true",
+                        help="Создать заготовку для логгирования")
+
     parser.add_argument('-c', '--config', action="store_true",
                         help='Добавить config/config.py, а также config.ini')
 
