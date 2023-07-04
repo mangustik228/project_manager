@@ -22,6 +22,7 @@ class Manager(BaseManager):
         self.copy_file('app/main.py')
         create_readme(name)
         logger.info(f'Создан проект {name}.')
+        self.copy_folder('.vscode')
 
     @check_atribute('git')
     def create_repo_git(self):
@@ -64,6 +65,7 @@ class Manager(BaseManager):
         os.mkdir('logs')
         self.requirements.add("telebot")
         self.copy_file('app/logs.py', 'app/config/logs.py')
+        logger.info(f'Добавлен файл app/config/logs.py')
 
     @check_atribute('name')
     def finish(self):
