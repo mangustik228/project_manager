@@ -39,6 +39,7 @@ class Manager(BaseManager):
     def create_config_template(self):
         self.requirements.add('pydantic')
         self.requirements.add('python-dotenv')
+        self.requirements.add('pydantic-settings')
         self.copy_file('config.ini')
         self.copy_folder('app/config')
         logger.info(f'Создана папка config и скопирован фаил config.ini')
