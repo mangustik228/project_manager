@@ -10,7 +10,7 @@ from utils.requirements import RequirementsManager
 class BaseManager:
     def __init__(self, namespace, base_path: str):
         self.namespace = namespace
-        venv = self._namespace.get('venv') or self._namespace.get('full')
+        venv = self._namespace.get('venv') != self._namespace.get('full')
         self.requirements = RequirementsManager(venv)
         self.settings = get_settings(base_path)
 

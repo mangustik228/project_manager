@@ -12,7 +12,7 @@ def get_namespace(config_path: str):
     version = _get_version(config_path)
     parser = argparse.ArgumentParser(
         prog='Project manager',  # Название программы
-        description='Предназначено для создания проектов и добавления стандартных файлов в существующие проекты',
+        description='Предназначено для создания проектов и добавления стандартных файлов в существующие проекты. Если стоит флаг -f то с остальными ключами происходит инверсия',
         epilog='Vasiliy mangust 2023'
     )
 

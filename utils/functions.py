@@ -8,7 +8,8 @@ def check_atribute(name: str):
         @wraps(func)
         def inner_function_2(*args, **kwargs):
             manager: BaseManager = args[0]
-            if manager.namespace.get(name) or \
+            # Используется исключающее ИЛИ
+            if manager.namespace.get(name) != \
                     manager.namespace.get('full'):
                 try:
                     return func(*args, **kwargs)
