@@ -5,7 +5,7 @@ from utils.base_manager import BaseManager
 from utils.functions import check_atribute
 from exceptions.exc import ProjectIsExist
 from utils.creators import create_readme
-from prompt_toolkit.shortcuts import radiolist_dialog
+from PyInquirer import prompt
 
 
 class Manager(BaseManager):
@@ -23,25 +23,31 @@ class Manager(BaseManager):
     def ask_about_name(self):
         if self.name:
             return
-        options = [
-            ("correct", "Так и задумано"),
-            ("cancel", "Отменить"),
-            ("insert_name", "Ввести имя проекта")
-        ]
 
-        dialog = radiolist_dialog(
-            title="Не указано имя проекта:", values=options)
-        selected_option = dialog.run()
-        if selected_option is None:
+        questions = [
+            {
+                'type': 'list',
+                'name': 'choice',
+                'message': 'Не указано имя проекта:',
+                'choices': [
+                    'Так и задумано',
+                    'Отменить',
+                    'Ввести имя проекта',
+                ],
+            }
+        ]
+        answer = prompt(questions).get("choice")
+        if answer is None:
             logger.info(f'strange error')
             exit()
-        if selected_option == "correct":
-            logger.info('ok')
+        if answer == "Так и задумано":
+            logger.info('Создаю файлы в текущей папке')
             return
-        if selected_option == "cancel":
-            exit('program stoped')
-        if selected_option == "insert_name":
-            self.name = input('Введите название для проекта: \n')
+        if answer == "Отменить":
+            logger.warning('Программа отменена')
+            exit()
+        if answer == "Ввести имя проекта":
+            self.name = input()
 
     def create_template(self):
         if os.path.exists('app'):
