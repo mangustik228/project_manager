@@ -21,7 +21,7 @@ class Manager(BaseManager):
             os.chdir(self.name)
 
     def ask_about_name(self):
-        if self.name:
+        if self.name is not None:
             return
 
         questions = [

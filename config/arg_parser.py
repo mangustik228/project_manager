@@ -38,6 +38,9 @@ def get_namespace(config_path: str):
     parser.add_argument("--telebot", action="store_true",
                         help="Добавить логгирование в telebot и установить соответствующую библиотеку")
 
+    parser.add_argument('-i', '--interactive', action="store_true",
+                        help="Создать проект в интерактивной форме")
+
     parser.add_argument('-l', '--logs', action="store_true",
                         help="Создать заготовку для логгирования")
 

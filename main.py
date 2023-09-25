@@ -1,14 +1,16 @@
 from loguru import logger
 from config.arg_parser import get_namespace
 from utils.manager import Manager
-
+from utils.Interactive_questions import InteractiveQuestions
 
 CONFIG_FILE = "/home/bacek/scripts/project_manager/config.ini"
 
 
 def main():
     namespace = get_namespace(CONFIG_FILE)
+    namespace = InteractiveQuestions.check_flag(namespace)
     manager = Manager(namespace, CONFIG_FILE)
+    logger.info(manager.name)
     manager.ask_about_name()
     manager.create_new_project()
     manager.create_template()
