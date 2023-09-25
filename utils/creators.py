@@ -1,7 +1,5 @@
 
 from datetime import datetime
-import os
-from loguru import logger
 
 
 def create_readme(file_name):

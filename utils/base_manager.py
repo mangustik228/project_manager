@@ -13,6 +13,7 @@ class BaseManager:
         venv = self._namespace.get('venv') != self._namespace.get('full')
         self.requirements = RequirementsManager(venv)
         self.settings = get_settings(base_path)
+        self.name = self._namespace.get("name")
 
     @property
     def namespace(self):

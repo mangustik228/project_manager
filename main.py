@@ -9,7 +9,9 @@ CONFIG_FILE = "/home/bacek/scripts/project_manager/config.ini"
 def main():
     namespace = get_namespace(CONFIG_FILE)
     manager = Manager(namespace, CONFIG_FILE)
+    manager.ask_about_name()
     manager.create_new_project()
+    manager.create_template()
     manager.create_env_file()
     manager.create_repo_git()
     manager.create_config_template()
@@ -19,7 +21,6 @@ def main():
     manager.create_venv()
     manager.requirements.install()
     manager.finish()
-
     logger.success(f'Проект создан. поздравляю')
 
 

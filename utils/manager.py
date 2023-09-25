@@ -5,23 +5,65 @@ from utils.base_manager import BaseManager
 from utils.functions import check_atribute
 from exceptions.exc import ProjectIsExist
 from utils.creators import create_readme
+from prompt_toolkit.shortcuts import radiolist_dialog
 
 
 class Manager(BaseManager):
-    @check_atribute('name')
     def create_new_project(self):
-        if not self.namespace.get("name"):
-            logger.debug(f'Не созданы README.md и main.py')
+        if not self.name:
+            logger.info(f'Не созданы README.md и main.py')
             return
-        name = self.namespace.get("name")
-        if os.path.exists(name):
-            raise ProjectIsExist(f"Проект с именем \"{name}\" уже существуют")
-        os.makedirs(f"{name}/app/utils")
-        self.requirements.add('loguru')
-        os.chdir(name)
-        self.copy_file('app/main.py')
-        create_readme(name)
-        logger.info(f'Создан проект {name}.')
+        if os.path.exists(self.name):
+            raise ProjectIsExist(
+                f"Проект с именем \"{self.name}\" уже существуют")
+        else:
+            os.makedirs(self.name)
+            os.chdir(self.name)
+
+    def ask_about_name(self):
+        if self.name:
+            return
+        options = [
+            ("correct", "Так и задумано"),
+            ("cancel", "Отменить"),
+            ("insert_name", "Ввести имя проекта")
+        ]
+
+        dialog = radiolist_dialog(
+            title="Не указано имя проекта:", values=options)
+        selected_option = dialog.run()
+        if selected_option is None:
+            logger.info(f'strange error')
+            exit()
+        if selected_option == "correct":
+            logger.info('ok')
+            return
+        if selected_option == "cancel":
+            exit('program stoped')
+        if selected_option == "insert_name":
+            self.name = input('Введите название для проекта: \n')
+
+    def create_template(self):
+        if os.path.exists('app'):
+            logger.error(f'folder app is exist')
+            return
+        os.makedirs("app")
+        if self.namespace.get("fastapi"):
+            logger.info(f"Создаю fastapi приложение {self.name}")
+            self.requirements.add("fastapi")
+            self.requirements.add("SQLAlchemy")
+            self.requirements.add("alembic")
+            self.copy_file('app/main_fastapi.py', 'app/main.py')
+            self.copy_folder("app/utils")
+            self.copy_folder("app/routers")
+            self.copy_folder("app/db")
+            os.makedirs("app/services")
+        else:
+            self.copy_file('app/main_sample.py')
+            logger.info(f'Создан проект {self.name}.')
+        if self.namespace.get("logs"):
+            self.requirements.add('loguru')
+        create_readme(self.name)
         self.copy_folder('.vscode')
 
     @check_atribute('git')
@@ -40,8 +82,18 @@ class Manager(BaseManager):
         self.requirements.add('pydantic')
         self.requirements.add('python-dotenv')
         self.requirements.add('pydantic-settings')
-        self.copy_file('config.ini')
-        self.copy_folder('app/config')
+        os.makedirs('app/config')
+        self.copy_file("app/config/__init__.py")
+        self.copy_file("config.ini")
+        if self.namespace.get("fastapi"):
+            self.copy_file("app/config/config_fastapi.py",
+                           "app/config/config.py")
+        elif self.namespace.get("telebot"):
+            self.copy_file("app/confgi/config_telebot.py",
+                           "app/config/congig.py")
+        else:
+            self.copy_file("app/config/config_sample.py",
+                           "app/config/config.py")
         logger.info(f'Создана папка config и скопирован фаил config.ini')
 
     @check_atribute("venv")
@@ -64,12 +116,16 @@ class Manager(BaseManager):
     @check_atribute('logs')
     def create_logs(self):
         os.mkdir('logs')
-        self.requirements.add("telebot")
-        self.copy_file('app/logs.py', 'app/config/logs.py')
+        if self.namespace.get("telebot"):
+            self.requirements.add("telebot")
+            self.copy_file('app/config/logs_telebot.py', 'app/config/logs.py')
+        else:
+            self.copy_file("app/config/logs.py")
         logger.info(f'Добавлен файл app/config/logs.py')
 
     @check_atribute('name')
     def finish(self):
-        subprocess.run(['git', 'add', '.'])
-        subprocess.run(['git', 'commit', '-m', 'Initilization'])
+        if self.namespace.get("git"):
+            subprocess.run(['git', 'add', '.'])
+            logger.warning("You must start command `git commit`")
         subprocess.run(['code', '.'])

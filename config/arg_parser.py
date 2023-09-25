@@ -32,6 +32,12 @@ def get_namespace(config_path: str):
     parser.add_argument('-g', '--git', action="store_true",
                         help='Инициализировать репозиторий и создать .gitignore и первый коммит')
 
+    parser.add_argument('--fastapi', action="store_true",
+                        help="Создать приложение под fast-api")
+
+    parser.add_argument("--telebot", action="store_true",
+                        help="Добавить логгирование в telebot и установить соответствующую библиотеку")
+
     parser.add_argument('-l', '--logs', action="store_true",
                         help="Создать заготовку для логгирования")
 
