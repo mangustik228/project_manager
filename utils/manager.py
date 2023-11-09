@@ -11,7 +11,6 @@ from PyInquirer import prompt
 class Manager(BaseManager):
     def create_new_project(self):
         if not self.name:
-            logger.info(f'Не созданы README.md и main.py')
             return
         if os.path.exists(self.name):
             raise ProjectIsExist(
@@ -59,18 +58,28 @@ class Manager(BaseManager):
             self.requirements.add("fastapi")
             self.requirements.add("SQLAlchemy")
             self.requirements.add("alembic")
+            self.requirements.add("asyncpg")
+            self.requirements.add("psycopg2-binary")
             self.copy_file('app/main_fastapi.py', 'app/main.py')
             self.copy_folder("app/utils")
             self.copy_folder("app/routers")
+            self.copy_folder("app/models")
             self.copy_folder("app/db")
             os.makedirs("app/services")
         else:
-            self.copy_file('app/main_sample.py')
+            self.copy_file('app/main_sample.py', "app/main.py")
             logger.info(f'Создан проект {self.name}.')
         if self.namespace.get("logs"):
             self.requirements.add('loguru')
-        create_readme(self.name)
-        self.copy_folder('.vscode')
+        if self.name:
+            logger.info(self.name)
+            self.copy_folder('.vscode')
+            create_readme(self.name)
+
+    @check_atribute("run")
+    def create_entrypoint(self):
+        self.copy_file("run.sh")
+        logger.info(f"Создан run.sh")
 
     @check_atribute('git')
     def create_repo_git(self):
@@ -82,6 +91,11 @@ class Manager(BaseManager):
     def create_env_file(self):
         self.copy_file('.env')
         logger.info(f'Создан фаил .env ')
+
+    @check_atribute('terminal')
+    def create_terminal(self):
+        self.copy_file('terminal.ipynb')
+        logger.info(f'Создан фаил terminal.ipynb')
 
     @check_atribute('config')
     def create_config_template(self):
@@ -122,6 +136,7 @@ class Manager(BaseManager):
     @check_atribute('logs')
     def create_logs(self):
         os.mkdir('logs')
+        self.requirements.add("loguru")
         if self.namespace.get("telebot"):
             self.requirements.add("telebot")
             self.copy_file('app/config/logs_telebot.py', 'app/config/logs.py')

@@ -84,7 +84,18 @@ QUESTIONS = [
         'message': 'Установить pytest?',
         'choices': ['ДА', 'НЕТ'],
     },
-
+    {
+        'type': 'list',
+        'name': 'run',
+        'message': 'Установить базовый скрипт run.sh',
+        'choices': ['ДА', 'НЕТ'],
+    },
+    {
+        'type': 'list',
+        'name': 'terminal',
+        'message': 'Создать базовый файл terminal.ipynb',
+        'choices': ['ДА', 'НЕТ'],
+    },
 ]
 
 
@@ -107,6 +118,7 @@ class InteractiveQuestions:
 
     def prepare_answer(self):
         for key, value in self.answers.items():
+            logger.info(key, value)
             if key == "name" and value == "Создать в текущей директории":
                 self.answers["name"] = False
             if key == "fastapi" and value == "Простое":
@@ -117,3 +129,4 @@ class InteractiveQuestions:
                 self.answers[key] = True
             if value == "fastapi":
                 self.answers["fastapi"] = True
+        self.answers["full"] = False

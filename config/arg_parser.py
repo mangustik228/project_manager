@@ -59,6 +59,12 @@ def get_namespace(config_path: str):
     parser.add_argument('-t', '--test', action="store_true",
                         help='Добавить файл pytest.ini')
 
+    parser.add_argument('-r', '--run', action="store_true",
+                        help='Добавить run.sh')
+
+    parser.add_argument('--terminal', action="store_true",
+                        help='Скопировать terminal.ipynb')
+
     parser.add_argument('-f', '--full', action="store_true",
                         help='Создать все что только можно')
 

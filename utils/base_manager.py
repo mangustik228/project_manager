@@ -14,6 +14,10 @@ class BaseManager:
         self.requirements = RequirementsManager(venv)
         self.settings = get_settings(base_path)
         self.name = self._namespace.get("name")
+        if not any(self._namespace.values()):
+            logger.warning(
+                f'Не было указано не одного аргумента... Чё делать то?')
+            exit()
 
     @property
     def namespace(self):

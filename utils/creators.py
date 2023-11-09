@@ -1,8 +1,13 @@
 
 from datetime import datetime
+import os
+
+from loguru import logger
 
 
 def create_readme(file_name):
+    if os.path.exists("README.md"):
+        logger.warning('README.md doesn\'t created. It was exists')
     with open('README.md', 'w', encoding='utf-8') as file:
         empty = "\n"
         file.write(f'''### {file_name}{empty * 25}
